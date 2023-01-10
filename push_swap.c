@@ -1,69 +1,73 @@
 #include "push_swap.h"
+void	number_check(t_stack *heap)
+{
+	if (heap->size == 2)
+		two_swap(heap);
+}
 
-void	ft_free_split(char **str)
+void	repeat_check(t_stack *heap)
 {
 	int	i;
-
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-}
-
-int	getcount(char **s)
-{
-	char	**a;
-	int		i;
-	int		j;
-	int		count;
-
-	i = 1;
-	while (s[i])
-	{
-		j = -1;
-		a = ft_split(*s, ' ');
-		while (a[++j])
-			count++;
-		i++;
-		ft_free_split(a);
-	}
-	return (count);
-}
-
-int	*getarg(char *s)
-{
-	char	**a;
-	int		*b;
-	int		i;
+	int	j;
 
 	i = 0;
-	a = ft_split(s, ' ');
-	b = malloc(getcount(a));
-	while (a[i])
+	while (i < heap->size)
 	{
-		b[i] = ft_atoi(a[i]);
+		j = i + 1;
+		while (j < heap->size)
+		{
+			if (heap->sa[i] == heap->sa[j])
+			{
+				write (2, "Error\n", 6);
+				exit (0);
+			}
+			j++;
+		}
 		i++;
 	}
-	ft_free_split(a);
-	return (b);
+}
+
+int	sorted_check(t_stack *heap)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	while (i < heap->size - 1)
+	{
+		if (heap->sa[i] > heap->sa[i + 1])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	all_free(t_stack *heap)
+{
+	free(heap->sa);
+	free(heap->sb);
+	free(heap);
 }
 
 int	main(int ag, char **av)
 {
-	int	i;
-	int	*arr;
-	int	j;
-	int	*sp;
-	int	x;
+	t_stack	*heap;
 
-	x = -1;
-	i = -1;
-	arr = malloc(getcount(av));
-	while (av[++i])
+	heap = (t_stack *)malloc(sizeof(t_stack));
+	heap->size = get_count(av);
+	if (heap->size == 0)
 	{
-		j = -1;
-		sp = getarg(av[i]);
-		while (sp[++j])
-			arr[++x] = sp[j];
+		free(heap);
+		return (0);
 	}
-	free(sp);
+	heap->sa = (int *)malloc(sizeof(int) * heap->size);
+	heap->sb = (int *)malloc(sizeof(int) * heap->size);
+	get_arg(heap, av);
+	repeat_check(heap);
+	if ((sorted_check(heap) == 1))
+	{
+		all_free(heap);
+		return (0);
+	}
+	number_check(heap);
 }
