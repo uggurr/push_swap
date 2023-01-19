@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: uguyildi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/17 15:59:43 by uguyildi          #+#    #+#             */
+/*   Updated: 2023/01/17 15:59:47 by uguyildi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	is_it_number(char *str)
@@ -33,12 +45,12 @@ int	get_count(char **ag)
 			if (!is_it_number(p.a[p.j]))
 			{
 				write (2, "Error\n", 6);
-				return (0);
+				exit (0);
 			}
 			p.count++;
 			free(p.a[p.j]);
 		}
-		if (ag[0] == NULL)
+		if (p.a[0] == NULL)
 			return (0);
 		free(p.a);
 	}
@@ -61,10 +73,44 @@ void	get_arg(t_stack *heap, char **av)
 		while (a[j])
 		{
 			heap->sa[x] = ft_atoi(a[j]);
+			atoi_check(a);
 			free(a[j]);
 			x++;
 			j++;
 		}
 		free(a);
+	}
+}
+
+int	smallest(t_stack *heap)
+{
+	int	i;
+	int	count;
+	int	flag;
+
+	flag = heap->sa[0];
+	i = 1;
+	count = 0;
+	while (i < heap->size)
+	{
+		if (flag > heap->sa[i])
+		{
+			flag = heap->sa[i];
+			count = i;
+		}
+		i++;
+	}
+	return (count);
+}
+
+void	sorted_list(t_stack *heap)
+{
+	int	i;
+
+	i = 0;
+	while (i < heap->size)
+	{
+		heap->ssort[i] = heap->sa[i];
+		i++;
 	}
 }
