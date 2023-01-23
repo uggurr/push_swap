@@ -88,7 +88,7 @@ int	main(int ag, char **av)
 		heap->size = get_count(av);
 		if (heap->size == 0)
 		{
-			write(2, "Erorr\n", 6);
+			write(2, "Error\n", 6);
 			free(heap);
 			return (0);
 		}

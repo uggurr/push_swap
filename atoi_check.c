@@ -12,6 +12,15 @@
 
 #include "push_swap.h"
 
+void	free_split(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i] != 0)
+		free(str[i]);
+}
+
 void	atoi_check(char **a)
 {
 	int		i;
@@ -24,7 +33,7 @@ void	atoi_check(char **a)
 		if (n < -2147483648 || n > 2147483647)
 		{
 			write (2, "Error\n", 6);
-			free(a[0]);
+			free_split(a);
 			free(a);
 			exit (0);
 		}
